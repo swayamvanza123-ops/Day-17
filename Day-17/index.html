@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">📦 StockPro</div>
+        <p class="side-label">MAIN MENU</p>
+        <a href="#dashboard" class="nav-link active">▦ Dashboard</a>
+        <a href="#products" class="nav-link">▣ Products</a>
+        <a href="#productForm" class="nav-link">＋ Add Product</a>
+        <div class="sidebar-note">
+            <span>💡</span>
+            <p>Manage your products, stock and inventory in one place.</p>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">INVENTORY MANAGEMENT</p>
+                <h1>Dashboard</h1>
+                <p class="muted">Manage your inventory with ease.</p>
+            </div>
+            <a href="#productForm" class="primary-link">＋ Add Product</a>
+        </header>
+
+        <section id="dashboard">
+            <div class="section-heading">
+                <div>
+                    <h2>Overview</h2>
+                    <p class="muted">Your inventory at a glance</p>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <article class="stat-card blue">
+                    <span class="stat-icon">📦</span>
+                    <p>Total Products</p>
+                    <h2 id="totalProducts">0</h2>
+                </article>
+                <article class="stat-card purple">
+                    <span class="stat-icon">▤</span>
+                    <p>Total Stock</p>
+                    <h2 id="totalStock">0</h2>
+                </article>
+                <article class="stat-card orange">
+                    <span class="stat-icon">⚠️</span>
+                    <p>Low Stock</p>
+                    <h2 id="lowStock">0</h2>
+                </article>
+                <article class="stat-card green">
+                    <span class="stat-icon">₹</span>
+                    <p>Inventory Value</p>
+                    <h2 id="inventoryValue">₹0</h2>
+                </article>
+            </div>
+        </section>
+
+        <section class="panel form-panel" id="productFormSection">
+            <div class="section-heading">
+                <div>
+                    <h2 id="formHeading">Add New Product</h2>
+                    <p class="muted">Enter product details and upload an image.</p>
+                </div>
+            </div>
+
+            <form id="productForm" novalidate>
+                <input type="hidden" id="editProductId">
+
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="productName">Product Name *</label>
+                        <input type="text" id="productName"
+                               placeholder="e.g. Laptop" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="productCategory">Category *</label>
+                        <select id="productCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Furniture">Furniture</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="productPrice">Price (₹) *</label>
+                        <input type="number" id="productPrice"
+                               placeholder="Enter price" min="0.01"
+                               step="0.01" required>
+                    </div>
+
+                    <div class="field">
+                        <label for="productStock">Stock Quantity *</label>
+                        <input type="number" id="productStock"
+                               placeholder="Enter quantity" min="0"
+                               step="1" required>
+                    </div>
+
+                    <div class="field full-width">
+                        <label for="productDescription">Description</label>
+                        <textarea id="productDescription"
+                                  placeholder="Describe the product (optional)"
+                                  rows="3"></textarea>
+                    </div>
+
+                    <div class="field full-width">
+                        <label for="productImage">Product Image</label>
+                        <input type="file" id="productImage"
+                               accept="image/png,image/jpeg,image/webp">
+
+                        <p class="hint">JPG, JPEG, PNG or WEBP · Maximum 2 MB</p>
+
+                        <div class="preview-container">
+                            <div id="imagePlaceholder" class="image-placeholder">
+                                <span>🖼️</span>
+                                <p>Image preview will appear here</p>
+                            </div>
+                            <img id="imagePreview"
+                                 src=""
+                                 alt="Product image preview"
+                                 hidden>
+                        </div>
+
+                        <div class="image-actions">
+                            <button type="button" id="changeImage"
+                                    class="btn btn-secondary" disabled>
+                                Change Image
+                            </button>
+                            <button type="button" id="removeImage"
+                                    class="btn btn-danger-outline" disabled>
+                                Remove Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <p id="formMessage" class="message" role="alert"
+                   aria-live="polite"></p>
+
+                <div class="form-actions">
+                    <button type="submit" id="submitButton"
+                            class="btn btn-primary">＋ Add Product</button>
+                    <button type="button" id="cancelEdit"
+                            class="btn btn-secondary" hidden>
+                        Cancel Edit
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        <section class="panel products-panel" id="products">
+            <div class="section-heading">
+                <div>
+                    <h2>Product Inventory</h2>
+                    <p class="muted">Search, filter, edit and manage products.</p>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <div class="search-box">
+                    <span>⌕</span>
+                    <input type="search" id="searchInput"
+                           placeholder="Search product name or category..."
+                           aria-label="Search products">
+                </div>
+
+                <select id="categoryFilter" aria-label="Filter by category">
+                    <option value="all">All Categories</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Furniture">Furniture</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <select id="stockFilter" aria-label="Filter by stock">
+                    <option value="all">All Stock</option>
+                    <option value="available">In Stock</option>
+                    <option value="low">Low Stock (&lt; 10)</option>
+                    <option value="out">Out of Stock</option>
+                </select>
+            </div>
+
+            <p id="resultCount" class="result-count">0 products</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody"></tbody>
+                </table>
+                <div id="emptyState" class="empty-state" hidden>
+                    <span>📦</span>
+                    <h3>No products found</h3>
+                    <p>Try changing your search or add a new product.</p>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <p id="pageInfo">Page 1 of 1</p>
+                <div class="page-buttons">
+                    <button type="button" id="prevPage"
+                            class="btn btn-secondary">← Previous</button>
+                    <button type="button" id="nextPage"
+                            class="btn btn-secondary">Next →</button>
+                </div>
+            </div>
+        </section>
+
+        <footer>StockPro Inventory Management · Built with HTML, CSS & JavaScript</footer>
+    </main>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
